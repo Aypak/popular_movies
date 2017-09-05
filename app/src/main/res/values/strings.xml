@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Popular Movies</string>
+    <string name="error_message">An error has occurred. Please try to close and relaunch the application</string>
+    <string name="sort_by">Sort By..</string>
+    <string name="popular">Popular</string>
+    <string name="top_rated">Top Rated</string>
+</resources>
