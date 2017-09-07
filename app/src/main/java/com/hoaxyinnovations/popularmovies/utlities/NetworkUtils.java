@@ -3,16 +3,14 @@ package com.hoaxyinnovations.popularmovies.utlities;
 import android.net.Uri;
 import android.util.Log;
 
+import com.hoaxyinnovations.popularmovies.BuildConfig;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
-
-/**
- * Created by kapsa on 8/31/2017.
- */
 
 public final class NetworkUtils {
 
@@ -24,7 +22,7 @@ public final class NetworkUtils {
 
     private static final String API_KEY_PARAM = "api_key";
 
-    private static final String API_KEY = "<your api key>";
+    private static final String API_KEY = BuildConfig.API_KEY;
 
     /**
      * Builds the URL used to talk to TMDB API using a sort param and API key

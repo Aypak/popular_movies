@@ -7,7 +7,7 @@ public class Movie {
     public String overview;
     public String vote_average;
 
-    public Movie(String title, String poster_path,String release_date, String overview, String vote_average){
+    Movie(String title, String poster_path, String release_date, String overview, String vote_average){
         this.title = title;
         this.poster_path = poster_path;
         this.overview = overview;

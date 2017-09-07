@@ -1,6 +1,5 @@
 package com.hoaxyinnovations.popularmovies;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,36 +9,27 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.hoaxyinnovations.popularmovies.utlities.Movie;
 import com.hoaxyinnovations.popularmovies.utlities.NetworkUtils;
 import com.hoaxyinnovations.popularmovies.utlities.TMDBJsonUtils;
-import com.squareup.picasso.Picasso;
-
-
 import java.net.URL;
-import java.util.ArrayList;
 
-import static com.hoaxyinnovations.popularmovies.utlities.NetworkUtils.moviePosterUrl;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private ListView mRecyclerView;
+    private RecyclerView mRecyclerView;
     private MovieAdapter mMovieAdapter;
 
     private TextView mErrorMessageDisplay;
 
     private ProgressBar mLoadingIndicator;
 
-    private ArrayList<Movie> moviestList;
 
+    private Movie[] moviesList;
 
 
     @Override
@@ -47,49 +37,26 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mRecyclerView = (ListView) findViewById(R.id.recyclerview_movielist);
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview_movielist);
 
         /* This TextView is used to display errors and will be hidden if there are no errors */
         mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
 
-
-
-        ArrayList<Movie> moviesList = new ArrayList<Movie>();
-
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
-
 
         loadMovieData("popular");
 
         GridLayoutManager layoutManager = new GridLayoutManager(this,2);
+        mRecyclerView.setLayoutManager(layoutManager);
 
         mMovieAdapter = new MovieAdapter(this,moviesList);
 
         mRecyclerView.setAdapter(mMovieAdapter);
 
-        AdapterView.OnItemClickListener adapterViewListener = new AdapterView.OnItemClickListener() {
-
-            //on click
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Movie movie = mMovieAdapter.getItem(position);
-
-                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-                intent.putExtra("title", movie.title);
-                intent.putExtra("release_date", movie.release_date);
-                intent.putExtra("overview",movie.overview);
-                intent.putExtra("vote_average",movie.vote_average);
-                intent.putExtra("poster_path",movie.poster_path);
-
-                startActivity(intent);
-            }
-        };
-        mRecyclerView.setOnItemClickListener(adapterViewListener);
     }
 
     private void loadMovieData(String sortBy) {
         showMovieDataView();
-
         new FetchMovieTask().execute(sortBy);
     }
 
@@ -142,8 +109,8 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(Movie[] movieData) {
             mLoadingIndicator.setVisibility(View.INVISIBLE);
             if (movieData != null) {
-                showMovieDataView();
-                mMovieAdapter.addAll(movieData);
+                moviesList = movieData;
+                mMovieAdapter.setMovieData(moviesList);
             } else {
                 showErrorMessage();
             }
@@ -163,13 +130,13 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_popular) {
-            mMovieAdapter.clear();
+            mMovieAdapter.setMovieData(null);
             loadMovieData("popular");
             return true;
         }
 
         if (id == R.id.action_top_rated) {
-            mMovieAdapter.clear();;
+            mMovieAdapter.setMovieData(null);
             loadMovieData("top_rated");
             return true;
         }
