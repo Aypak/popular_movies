@@ -6,4 +6,5 @@
     <string name="top_rated">Top Rated</string>
     <string name="vote_average">"Vote Average: "</string>
     <string name="release_date">"Release Date: "</string>
+    <string name="movie_poster_image">Movie poster image</string>
 </resources>
