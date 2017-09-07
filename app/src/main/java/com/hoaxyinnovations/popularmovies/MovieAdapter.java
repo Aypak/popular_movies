@@ -70,13 +70,9 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
             Movie movie = mMovieList[position];
             Context context = getContext();
             Class destinationClass = DetailActivity.class;
-            Intent intentToStartDetailActivity = new Intent(context, destinationClass);
-            intentToStartDetailActivity.putExtra("title",movie.title);
-            intentToStartDetailActivity.putExtra("poster_path",movie.poster_path);
-            intentToStartDetailActivity.putExtra("overview",movie.overview);
-            intentToStartDetailActivity.putExtra("vote_average",movie.vote_average);
-            intentToStartDetailActivity.putExtra("release_date",movie.release_date);
-            context.startActivity(intentToStartDetailActivity);
+            Intent intent= new Intent(context, destinationClass);
+            intent.putExtra("movie",movie);
+            context.startActivity(intent);
 
         }
     }
