@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         mErrorMessageDisplay.setVisibility(View.VISIBLE);
     }
 
-    public class FetchMovieTask extends AsyncTask<String, Void, Movie[]> {
+    private class FetchMovieTask extends AsyncTask<String, Void, Movie[]> {
 
         @Override
         protected void onPreExecute() {
@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
                         .getResponseFromHttpUrl(moviesListUrl);
 
                 return TMDBJsonUtils
-                        .getMovieObjectsFromJson(MainActivity.this, jsonMovieResponse);
+                        .getMovieObjectsFromJson(jsonMovieResponse);
 
             } catch (Exception e) {
                 e.printStackTrace();

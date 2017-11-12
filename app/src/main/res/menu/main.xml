@@ -11,6 +11,14 @@
                 android:title="@string/popular" />
             <item android:id="@+id/action_top_rated"
                 android:title="@string/top_rated" />
+            <item android:id="@+id/action_favorites"
+                android:title="@string/action_favorites"/>
         </menu>
     </item>
+<!--    <item
+        android:id="@+id/action_settings"
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:title="@string/action_settings"
+        app:showAsAction="ifRoom" />-->
+
 </menu>

@@ -1,14 +1,12 @@
 package com.hoaxyinnovations.popularmovies.utlities;
 
-import android.content.Context;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public final class TMDBJsonUtils {
 
-    public static Movie[] getMovieObjectsFromJson(Context context, String moviesJsonStr)
+    public static Movie[] getMovieObjectsFromJson(String moviesJsonStr)
             throws JSONException {
 
 

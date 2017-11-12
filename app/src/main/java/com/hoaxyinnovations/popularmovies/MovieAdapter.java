@@ -7,8 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
 import com.hoaxyinnovations.popularmovies.utlities.Movie;
 import com.squareup.picasso.Picasso;
+
 import static com.hoaxyinnovations.popularmovies.utlities.NetworkUtils.moviePosterUrl;
 
 
@@ -16,7 +18,7 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
     private Movie[] mMovieList;
 
-    private Context mContext;
+    private final Context mContext;
 
     MovieAdapter(Context context, Movie[] movies) {
         mContext = context;
@@ -32,7 +34,7 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
-        View moviesView = inflater.inflate(R.layout.list_item,parent,false);
+        View moviesView = inflater.inflate(R.layout.list_item, parent, false);
         return new ViewHolder(moviesView);
     }
 
@@ -40,23 +42,22 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         Movie movie = mMovieList[position];
         ImageView moviePoster = holder.moviePoster;
-        String posterPath = (moviePosterUrl(movie.poster_path,"w185")).toString();
+        String posterPath = (moviePosterUrl(movie.poster_path)).toString();
         Picasso.with(getContext()).load(posterPath).into(moviePoster);
 
     }
 
     @Override
     public int getItemCount() {
-        if(mMovieList == null){
+        if (mMovieList == null) {
             return 0;
-        }
-        else{
+        } else {
             return mMovieList.length;
         }
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        ImageView moviePoster;
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        final ImageView moviePoster;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -70,8 +71,8 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
             Movie movie = mMovieList[position];
             Context context = getContext();
             Class destinationClass = DetailActivity.class;
-            Intent intent= new Intent(context, destinationClass);
-            intent.putExtra("movie",movie);
+            Intent intent = new Intent(context, destinationClass);
+            intent.putExtra("movie", movie);
             context.startActivity(intent);
 
         }
@@ -82,7 +83,7 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
         notifyDataSetChanged();
     }
 
-    }
+}
 
 
 

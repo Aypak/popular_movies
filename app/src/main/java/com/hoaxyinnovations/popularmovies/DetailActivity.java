@@ -1,6 +1,5 @@
 package com.hoaxyinnovations.popularmovies;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -8,8 +7,6 @@ import android.widget.TextView;
 
 import com.hoaxyinnovations.popularmovies.utlities.Movie;
 import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 import static com.hoaxyinnovations.popularmovies.utlities.NetworkUtils.moviePosterUrl;
 
@@ -26,10 +23,10 @@ public class DetailActivity extends AppCompatActivity {
         TextView movieVoteAverage = (TextView) findViewById(R.id.tv_vote_average);
         TextView movieReleaseDate = (TextView) findViewById(R.id.tv_release_date);
 
-        Movie movie = (Movie) getIntent().getParcelableExtra("movie");
+        Movie movie = getIntent().getParcelableExtra("movie");
 
 
-        String moviePosterUrl = (moviePosterUrl(movie.poster_path,"w185")).toString();
+        String moviePosterUrl = (moviePosterUrl(movie.poster_path)).toString();
         Picasso.with(getApplicationContext()).load(moviePosterUrl).into(movieImage);
 
         movieTitle.setText(movie.title);

@@ -54,12 +54,11 @@ public final class NetworkUtils {
      * Builds the URL used to talk to TMDB API and get the path to the poster for a movie. No API key needed to get the path to the poster
      *
      * @param posterPath The poster_path as it appears in the query response from moviesList.
-     * @param posterSize w185 recomended
      * @return The URL to use to query the TMDB API.
      */
 
-    public static URL moviePosterUrl(String posterPath, String posterSize){
-        String moviePosterPath = IMAGE_BASE_URL+posterSize+posterPath;
+    public static URL moviePosterUrl(String posterPath){
+        String moviePosterPath = IMAGE_BASE_URL+ "w185" +posterPath;
         Uri builtUri = Uri.parse(moviePosterPath).buildUpon()
                 .build();
 

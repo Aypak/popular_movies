@@ -4,11 +4,11 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Movie implements Parcelable {
-    public String title;
-    public String poster_path;
-    public String release_date;
-    public String overview;
-    public String vote_average;
+    public final String title;
+    public final String poster_path;
+    public final String release_date;
+    public final String overview;
+    public final String vote_average;
 
     Movie(String title, String poster_path, String release_date, String overview, String vote_average){
         this.title = title;
@@ -32,7 +32,7 @@ public class Movie implements Parcelable {
         dest.writeString(this.vote_average);
     }
 
-    protected Movie(Parcel in) {
+    private Movie(Parcel in) {
         this.title = in.readString();
         this.poster_path = in.readString();
         this.release_date = in.readString();
