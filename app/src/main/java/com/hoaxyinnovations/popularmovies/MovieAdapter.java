@@ -20,7 +20,7 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
     private final Context mContext;
 
-    MovieAdapter(Context context, Movie[] movies) {
+    public MovieAdapter(Context context, Movie[] movies) {
         mContext = context;
         mMovieList = movies;
     }

@@ -1,5 +1,6 @@
 package com.hoaxyinnovations.popularmovies.data;
 
+import android.annotation.TargetApi;
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
@@ -15,8 +16,8 @@ import android.support.annotation.Nullable;
 
 public class FavoritesProvider extends ContentProvider {
 
-    public static final int CODE_FAVORITES = 200;
-    public static final int CODE_FAVORITES_WITH_MOVIE_ID = 203;
+    private static final int CODE_FAVORITES = 200;
+    private static final int CODE_FAVORITES_WITH_MOVIE_ID = 203;
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
@@ -102,7 +103,7 @@ public class FavoritesProvider extends ContentProvider {
             }
 
         }
-        return Uri.withAppendedPath(FavoritesContract.BASE_CONTENT_URI,values.getAsString(FavoritesContract.FavoriteEntry.COLUMN_MOVIE_ID));
+        return Uri.withAppendedPath(FavoritesContract.BASE_CONTENT_URI, values != null ? values.getAsString(FavoritesContract.FavoriteEntry.COLUMN_MOVIE_ID) : null);
 
     }
 
@@ -132,5 +133,12 @@ public class FavoritesProvider extends ContentProvider {
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
         return 0;
+    }
+
+    @Override
+    @TargetApi(11)
+    public void shutdown() {
+        mOpenHelper.close();
+        super.shutdown();
     }
 }

@@ -2,50 +2,37 @@
 <ScrollView android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent">
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
+        android:id="@+id/rootview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        >
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <include
+            android:id="@+id/movie_and_poster"
+            layout="@layout/movie_title_and_poster"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <include
+            android:id="@+id/move_details"
+            layout="@layout/movie_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/reviews_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:id="@+id/title_and_image">
+            android:text="@string/reviews_label"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/tv_movie_title"
-                android:padding="8dp"/>
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/detail_movie_image"
-                android:contentDescription="@string/movie_poster_image"/>
-        </LinearLayout>
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:id="@+id/reviews_container"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_below="@id/title_and_image">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/tv_movie_overview"
-                android:layout_weight="1"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/tv_vote_average"
-                android:layout_weight="1"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/tv_release_date"
-                android:layout_weight="1"/>
-        </LinearLayout>
-    </RelativeLayout>
+            android:orientation="vertical" />
+
+    </LinearLayout>
 </ScrollView>

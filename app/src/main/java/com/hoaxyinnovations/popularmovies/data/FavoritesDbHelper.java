@@ -3,14 +3,15 @@ package com.hoaxyinnovations.popularmovies.data;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * Created by kapsa on 11/10/2017.
  */
 
-public class FavoritesDbHelper extends SQLiteOpenHelper {
+class FavoritesDbHelper extends SQLiteOpenHelper {
 
-    public static final String DATABASE_NAME = "favorites.db";
+    private static final String DATABASE_NAME = "favorites.db";
 
     private static final int DATABASE_VERSION = 3;
 
@@ -21,15 +22,17 @@ public class FavoritesDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        final String SQL_CREATE_WEATHER_TABLE =
+        final String SQL_CREATE_FAVORITES_TABLE =
 
-                "CREATE TABLE " + FavoritesContract.FavoriteEntry.TABLE_NAME + " (" +
-                        FavoritesContract.FavoriteEntry.COLUMN_MOVIE_ID + " INTEGER PRIMARY KEY, " +
+                "CREATE TABLE IF NOT EXISTS " + FavoritesContract.FavoriteEntry.TABLE_NAME + " (" +
+                        FavoritesContract.FavoriteEntry.COLUMN_MOVIE_ID + " VARCHAR PRIMARY KEY, " +
                         FavoritesContract.FavoriteEntry.COLUMN_TITLE + " VARCHAR NOT NULL, "+
-                        FavoritesContract.FavoriteEntry.COLUMN_MOVIE_POSTER+ " VARCHAR NOT NULL, "+
-                        FavoritesContract.FavoriteEntry.COLUMN_PLOT_SYNOPSIS + " VARCHAR NOT NULL, "+
+                        FavoritesContract.FavoriteEntry.COLUMN_POSTER_PATH+ " VARCHAR NOT NULL, "+
+                        FavoritesContract.FavoriteEntry.COLUMN_OVERVIEW + " VARCHAR NOT NULL, "+
                         FavoritesContract.FavoriteEntry.COLUMN_RELEASE_DATE + " VARCHAR NOT NULL, "+
-                        FavoritesContract.FavoriteEntry.COLUMN_VOTE_AVERAGE + " VARCHAR NOT NULL ";
+                        FavoritesContract.FavoriteEntry.COLUMN_VOTE_AVERAGE + " VARCHAR NOT NULL "+ ")";
+        Log.d("sql query: ",SQL_CREATE_FAVORITES_TABLE);
+        db.execSQL(SQL_CREATE_FAVORITES_TABLE);
 
     }
 

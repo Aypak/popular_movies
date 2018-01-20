@@ -18,7 +18,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".DetailActivity" />
-        <activity android:name=".SettingsActivity"></activity>
+        <activity android:name=".FavoritesActivity" />
+        <provider
+            android:authorities="com.hoaxyinnovations.popularmovies"
+            android:name=".data.FavoritesProvider"
+            android:exported="false"/>
     </application>
 
 </manifest>

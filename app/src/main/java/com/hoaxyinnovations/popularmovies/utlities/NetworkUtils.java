@@ -17,10 +17,16 @@ public final class NetworkUtils {
     private static final String TAG = NetworkUtils.class.getSimpleName();
 
     private static final String BASE_URL = "https://api.themoviedb.org/3/movie/";
+    private static final String YOUTUBE_BASE_URL = "https://www.youtube.com/watch";
+    private static final String YOUTUBE_QUERY_PARAM = "v";
 
     private static final String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/";
 
     private static final String API_KEY_PARAM = "api_key";
+
+    private static final String REVIEWS_PATH = "reviews";
+
+    private static final String VIDEOS_PATH = "videos";
 
     private static final String API_KEY = BuildConfig.API_KEY;
 
@@ -49,6 +55,59 @@ public final class NetworkUtils {
         return url;
 
     }
+
+    public static URL reviewsListUrl(String movieID){
+        String baseURL = BASE_URL + movieID;
+        Uri builtUri = Uri.parse(baseURL).buildUpon()
+                .appendPath(REVIEWS_PATH).appendQueryParameter(API_KEY_PARAM, API_KEY)
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        Log.v(TAG, "Built URI " + url);
+
+        return url;
+
+    }
+
+    public static URL videosListUrl(String movieID){
+        String baseURL = BASE_URL + movieID;
+        Uri builtUri = Uri.parse(baseURL).buildUpon()
+                .appendPath(VIDEOS_PATH).appendQueryParameter(API_KEY_PARAM, API_KEY)
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        Log.v(TAG, "Built URI " + url);
+
+        return url;
+
+    }
+
+    public static Uri youtubevideoUri(String youtubeID){
+        Uri builtUri = Uri.parse(YOUTUBE_BASE_URL).buildUpon()
+                .appendQueryParameter(YOUTUBE_QUERY_PARAM, youtubeID)
+                .build();
+
+
+        Log.v(TAG, "Built URI " + builtUri);
+
+        return builtUri;
+
+    }
+
+
+
 
     /**
      * Builds the URL used to talk to TMDB API and get the path to the poster for a movie. No API key needed to get the path to the poster

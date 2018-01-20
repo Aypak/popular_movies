@@ -1,7 +1,10 @@
 package com.hoaxyinnovations.popularmovies;
 
-import android.os.AsyncTask;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,7 +20,7 @@ import com.hoaxyinnovations.popularmovies.utlities.TMDBJsonUtils;
 import java.net.URL;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Movie[]> {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -28,8 +31,11 @@ public class MainActivity extends AppCompatActivity {
 
     private ProgressBar mLoadingIndicator;
 
+    private String sortOrder;
 
     private Movie[] moviesList;
+
+    private static final int MOVIES_LOADER_ID = 0;
 
 
     @Override
@@ -44,7 +50,9 @@ public class MainActivity extends AppCompatActivity {
 
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
 
-        loadMovieData("popular");
+        /*Initially set sortorder to popular*/
+        sortOrder = "popular";
+
 
         GridLayoutManager layoutManager = new GridLayoutManager(this,2);
         mRecyclerView.setLayoutManager(layoutManager);
@@ -53,12 +61,12 @@ public class MainActivity extends AppCompatActivity {
 
         mRecyclerView.setAdapter(mMovieAdapter);
 
+        LoaderManager.LoaderCallbacks<Movie[]> callback = MainActivity.this;
+
+        getSupportLoaderManager().initLoader(MOVIES_LOADER_ID, null, callback);
     }
 
-    private void loadMovieData(String sortBy) {
-        showMovieDataView();
-        new FetchMovieTask().execute(sortBy);
-    }
+
 
 
     private void showMovieDataView() {
@@ -74,50 +82,75 @@ public class MainActivity extends AppCompatActivity {
         mErrorMessageDisplay.setVisibility(View.VISIBLE);
     }
 
-    private class FetchMovieTask extends AsyncTask<String, Void, Movie[]> {
+    @Override
+    public Loader<Movie[]> onCreateLoader(int id, final Bundle args) {
+        return new AsyncTaskLoader<Movie[]>(this) {
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            mLoadingIndicator.setVisibility(View.VISIBLE);
-        }
+            Movie[] mMovieData = null;
 
-        @Override
-        protected Movie[] doInBackground(String... params) {
+            @Override
+            protected void onStartLoading() {
 
-            if (params.length == 0) {
-                return null;
+                mLoadingIndicator.setVisibility(View.VISIBLE);
+
+                if (mMovieData!= null) {
+                    mLoadingIndicator.setVisibility(View.INVISIBLE);
+                    deliverResult(mMovieData);
+                } else {
+                    forceLoad();
+                }
             }
 
-            String sortBy = params[0];
-            URL moviesListUrl = NetworkUtils.moviesListUrl(sortBy);
+            @Override
+            public Movie[] loadInBackground() {
 
-            try {
-                String jsonMovieResponse = NetworkUtils
-                        .getResponseFromHttpUrl(moviesListUrl);
+                URL moviesListUrl = NetworkUtils.moviesListUrl(sortOrder);
 
-                return TMDBJsonUtils
-                        .getMovieObjectsFromJson(jsonMovieResponse);
+                try {
+                    String jsonMovieResponse = NetworkUtils
+                            .getResponseFromHttpUrl(moviesListUrl);
+                    return TMDBJsonUtils.getMovieObjectsFromJson(jsonMovieResponse);
 
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
             }
-        }
-
-        @Override
-        protected void onPostExecute(Movie[] movieData) {
-            mLoadingIndicator.setVisibility(View.INVISIBLE);
-            if (movieData != null) {
-                moviesList = movieData;
-                mMovieAdapter.setMovieData(moviesList);
-            } else {
-                showErrorMessage();
+            public void deliverResult(Movie[] movieData) {
+                mMovieData = movieData;
+                super.deliverResult(movieData);
             }
-        }
+        };
+    }
 
+    @Override
+    public void onLoadFinished(Loader<Movie[]> loader, Movie[] data) {
+        mLoadingIndicator.setVisibility(View.INVISIBLE);
+        moviesList = data;
+        mMovieAdapter.setMovieData(moviesList);
+        if (null == data) {
+            showErrorMessage();
+        } else {
+            showMovieDataView();
+        }
 
     }
+
+    @Override
+    public void onLoaderReset(Loader<Movie[]> loader) {
+
+    }
+
+    private void invalidateData() {
+        mMovieAdapter.setMovieData(null);
+    }
+
+    private void startFavoritesActivity() {
+        Intent favoritesIntent = new Intent(MainActivity.this, FavoritesActivity.class);
+        startActivity(favoritesIntent);
+    }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -130,15 +163,21 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_popular) {
-            mMovieAdapter.setMovieData(null);
-            loadMovieData("popular");
+            invalidateData();
+            sortOrder = "popular";
+            getSupportLoaderManager().restartLoader(MOVIES_LOADER_ID, null, this);
             return true;
         }
 
         if (id == R.id.action_top_rated) {
-            mMovieAdapter.setMovieData(null);
-            loadMovieData("top_rated");
+            invalidateData();
+            sortOrder = "top_rated";
+            getSupportLoaderManager().restartLoader(MOVIES_LOADER_ID, null, this);
             return true;
+        }
+
+        if (id == R.id.action_favorites) {
+         startFavoritesActivity();
         }
 
         return super.onOptionsItemSelected(item);

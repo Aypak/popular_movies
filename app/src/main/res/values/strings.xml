@@ -82,4 +82,9 @@
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="action_settings">settings</string>
     <string name="action_favorites">Favorites</string>
+    <string name="no_favorites_message">There are no favorites to display</string>
+    <string name="synopsis_dummy_text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</string>
+    <string name="play_trailer">Play Trailer</string>
+    <string name="reviews_label">Reviews</string>
+    <string name="movie_poster_image_description">Movie poster image</string>
 </resources>
